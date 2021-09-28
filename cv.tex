@@ -1,0 +1,98 @@
+%!TEX TS-program = xelatex
+%!TEX encoding = UTF-8 Unicode
+%
+% Based on Awesome CV LaTeX Template for CV/Resume
+% from Claud D. Park <posquit0.bj@gmail.com>
+% Downloaded from: https://github.com/posquit0/Awesome-CV
+%
+% Author: Benoît Seignovert
+% https://github.com/seignovert/cv
+%
+% Template license:
+% CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/)
+%
+
+%-------------------------------------------------------------------------------
+% CONFIGURATIONS
+%-------------------------------------------------------------------------------
+% A4 paper size by default, use 'letterpaper' for US letter
+\documentclass[11pt, a4paper]{templates/awesome-cv}
+\usepackage{multicol,tabularx}
+
+% Configure page margins with geometry
+\geometry{left=1.27cm, top=.8cm, right=1.27cm, bottom=1.8cm, footskip=.5cm}
+
+% Specify the location of the included fonts
+\fontdir[fonts/]
+
+% Color for highlights
+% Awesome Colors: awesome-emerald, awesome-skyblue, awesome-red, awesome-pink, 
+%                 awesome-orange, awesome-nephritis, awesome-concrete, awesome-darknight
+\colorlet{awesome}{awesome-skyblue}
+% Uncomment if you would like to specify your own color
+% \definecolor{awesome}{HTML}{CA63A8}
+
+% Colors for text
+% Uncomment if you would like to specify your own color
+% \definecolor{darktext}{HTML}{414141}
+% \definecolor{text}{HTML}{333333}
+% \definecolor{graytext}{HTML}{5D5D5D}
+% \definecolor{lighttext}{HTML}{999999}
+
+% Set false if you don't want to highlight section with awesome color
+\setbool{acvSectionColorHighlight}{true}
+
+% If you would like to change the social information separator from a pipe (|) to something else
+\renewcommand{\acvHeaderSocialSep}{\quad\textbar\quad}
+
+
+%-------------------------------------------------------------------------------
+%	PERSONAL INFORMATION
+%	Imported separately[private content]
+%-------------------------------------------------------------------------------
+\input{data/infos.tex}
+
+\lfooter{\today}
+\cfooter{C. Bouysset~~~·~~~Curriculum Vitae}
+\rfooter{\thepage/\pageref{LastPage}}
+
+%-------------------------------------------------------------------------------
+\begin{document}
+
+% Print the header with above personal information
+% Give optional argument to change alignment(C: center, L: left, R: right)
+\makecvheader
+
+% Print the footer with 3 arguments(<left>, <center>, <right>)
+% Leave any of these blank if they are not needed
+\makecvfooter
+
+%-------------------------------------------------------------------------------
+%	CV/RESUME CONTENT
+%	Each section is imported separately, open each file in turn to modify content
+%-------------------------------------------------------------------------------
+\vspace{-1.2\baselineskip}
+\input{data/experience.tex}
+\vspace{-\baselineskip}
+\begin{minipage}[t]{.49\linewidth}
+\input{data/education.tex}
+\end{minipage}
+\begin{minipage}[t]{.02\linewidth}
+    \cvsubsection{}
+\end{minipage}
+\begin{minipage}[t]{.49\linewidth}
+\input{data/skills.tex}
+\end{minipage}
+
+\input{data/honors.tex}
+\clearpage
+\input{data/publications.tex}
+\input{data/seminars.tex}
+\input{data/posters.tex}
+\clearpage
+\input{data/volunteer.tex}
+\input{data/teaching.tex}
+\input{data/activities.tex}
+\input{data/other.tex}
+%-------------------------------------------------------------------------------
+\end{document}

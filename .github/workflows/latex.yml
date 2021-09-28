@@ -1,0 +1,81 @@
+name: LaTeX CI
+
+env:
+  MAIN_TEX: cv.tex
+  FILENAME: Bouysset-CV.pdf
+  BUILD_BRANCH: pdf
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    tags-ignore:
+      - '*'
+    paths:
+      - '**.tex'
+      - '**.cls'
+      - '**.sty'
+      - 'data/*.jpg'
+
+jobs:
+  build:
+    name: XeLaTeX
+    runs-on: ubuntu-latest
+    container:
+      image: seignovert/latex-cv
+
+    steps:
+      - uses: actions/checkout@v2
+
+      # Run twice to include lastpage reference
+      - name: Build CV
+        run: |
+          xelatex -jobname=output ${MAIN_TEX}
+          xelatex -jobname=output ${MAIN_TEX}
+
+      - name: Save PDF
+        uses: actions/upload-artifact@v2
+        with:
+          name: pdf
+          path: output.pdf
+          if-no-files-found: error
+
+  create_build:
+    name: Push PDF to build branch
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Retrieve associated commits
+        run: |
+            NEW_TAG=$(date +'%Y.%m.%d')
+            LAST_TAG=$(git tag --sort=creatordate | tr '\n' ' ' | sed -e "s/ $NEW_TAG //" | tr ' ' '\n' | tail -1)
+            CHANGELOG=$(git log --pretty='format:- %s' $LAST_TAG..HEAD)
+            echo "COMMIT_MSG=$CHANGELOG" >> $GITHUB_ENV
+
+      - name: Create and clean build branch
+        run: |
+          git checkout -B ${{ env.BUILD_BRANCH }}
+          git rm -r .
+
+      - name: Retreive PDF artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: pdf
+
+      - name: Rename PDF
+        run: |
+          mv output.pdf ${{ env.FILENAME }}
+
+      - name: Commit and push build
+        uses: EndBug/add-and-commit@v7
+        with:
+          default_author: github_actions
+          message: "${{ env.COMMIT_MSG }}"
+          add: ${{ env.FILENAME }}
+          branch: ${{ env.BUILD_BRANCH }}
+          pull_strategy: NO-PULL
+          push: origin ${{ env.BUILD_BRANCH }} --force

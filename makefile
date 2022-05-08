@@ -4,6 +4,8 @@ OUT_JPG = cv/
 
 main: readme
 
+pdf: cv.pdf
+
 %.pdf: %.tex data/*.tex
 	$(CC) -output-directory=$(OUTPUT_DIR) $<
 	$(CC) -output-directory=$(OUTPUT_DIR) $<

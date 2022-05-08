@@ -645,7 +645,7 @@
       {\entrytitlestyle{#1} \hfill \entrylocationstyle{#3} \\[-3.5mm]
        \entrypositionstyle{#2} \hfill \entrydatestyle{#4}}%
     \ifempty{#5}%
-      {}%
+      {\\[3mm]}%
       {\\[1.5mm]\descriptionstyle{#5}}%
   \end{tabularx}%
   \par
